@@ -8,3 +8,9 @@
 - player 2: Up+Down to move
 - games are played first to 6
 - press space to start
+
+## installation:
+
+ - download pong.exe
+ - install
+ - play (preferably not alone)
