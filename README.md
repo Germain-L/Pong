@@ -11,6 +11,6 @@
 
 ## installation:
 
- - download pong.exe
+ - download pong_installer.exe
  - install
  - play (preferably not alone)
