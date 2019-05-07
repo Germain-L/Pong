@@ -14,3 +14,9 @@
  - download pong_installer.exe
  - install
  - play (preferably not alone)
+
+
+## Navigating menus:
+- Up/Down arrows to select
+- Enter to click
+- after a game is over wait 5 seconds for the menu to appear
