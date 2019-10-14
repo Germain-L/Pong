@@ -388,7 +388,7 @@ int main()
 			// Up arrow means increase resolution
 			if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Up))
 			{
-				if (resIndex <= sizeof(resolutions) / sizeof(sf::VideoMode))
+				if (resIndex+1 < sizeof(resolutions) / sizeof(sf::VideoMode))
 				{
 					resIndex++;
 					up_arrow.setFillColor(sf::Color::White);
