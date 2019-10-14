@@ -338,17 +338,21 @@ int main()
 	int resIndex = 0;
 	bool isFullscreen = true;
 
+	// Create window to select resolution
 	sf::RenderWindow choose_res(sf::VideoMode(resolutions[0][0], resolutions[0][1]), "Select Resolution", sf::Style::Default);
 	sf::Font fontRes;
 	fontRes.loadFromFile("resources\\menu.ttf");
+	// Define texts
 	sf::Text choose_res_text, res_text, fullscreen_text;
 	choose_res_text.setFont(fontRes);
+	// Make select resolution text
 	choose_res_text.setString("Select Resolution");
 	choose_res_text.setCharacterSize(100);
 	choose_res_text.setColor(sf::Color::White);
 	choose_res_text.setStyle(sf::Text::Regular);
 	choose_res_text.setOrigin((choose_res_text.getLocalBounds().width) / 2, 0);
 	choose_res_text.setPosition((choose_res.getSize().x / 2), 20);
+	// Make text displaying currently selected resolution
 	res_text.setFont(fontRes);
 	res_text.setString("1920x1080");
 	res_text.setCharacterSize(150);
@@ -356,6 +360,7 @@ int main()
 	res_text.setStyle(sf::Text::Regular);
 	res_text.setOrigin((res_text.getLocalBounds().width) / 2, (res_text.getLocalBounds().height) / 2);
 	res_text.setPosition((choose_res.getSize().x / 2), 200);
+	// Create up and down arrows
 	sf::CircleShape up_arrow(80, 3), down_arrow(80, 3);
 	up_arrow.setOrigin(up_arrow.getLocalBounds().width / 2, up_arrow.getLocalBounds().height);
 	down_arrow.setOrigin((up_arrow.getLocalBounds().width / 2), 0);
@@ -364,7 +369,7 @@ int main()
 	int res_textPos = res_text.getPosition().x;
 	up_arrow.setPosition(res_textPos, res_text.getPosition().y+20);
 	down_arrow.setPosition(res_textPos, res_text.getPosition().y + 190);
-
+	// Create text indicating fullscreen status
 	fullscreen_text.setFont(fontRes);
 	fullscreen_text.setString("F for Fullscreen");
 	fullscreen_text.setCharacterSize(100);
@@ -380,12 +385,30 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				choose_res.close();
+			// Up arrow means increase resolution
 			if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Up))
-				if (resIndex < sizeof(resolutions) / sizeof(sf::VideoMode)) resIndex++;
+			{
+				if (resIndex <= sizeof(resolutions) / sizeof(sf::VideoMode))
+				{
+					resIndex++;
+					up_arrow.setFillColor(sf::Color::White);
+				}
+				else up_arrow.setFillColor(sf::Color::Transparent);
+			}
+			// Down arrow means decrease resolution
 			if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Down))
-				if (resIndex > 0) resIndex--;
+			{
+				if (resIndex > 0)
+				{
+					resIndex--;
+					down_arrow.setFillColor(sf::Color::White);
+				}
+				else down_arrow.setFillColor(sf::Color::Transparent);
+			}
+			// Enter means play game
 			if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Enter))
 				choose_res.close();
+			// F toggles fullscreen mode
 			if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::F))
 			{
 				isFullscreen = !isFullscreen;
