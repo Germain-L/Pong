@@ -322,8 +322,93 @@ int main()
 	sf::Image icon;
 	icon.loadFromFile("resources\\icon.png");
 
+	// Resolutions
+	int resolutions[][2] = {
+		{1025, 576},
+		{1152, 648},
+		{1280, 720},
+		{1366, 768},
+		{1600, 900},
+		{1920, 1080},
+		{2560, 1440},
+		{3840, 2160},
+		{7680, 4320},
+	};
+
+	int resIndex = 0;
+	bool isFullscreen = true;
+
+	sf::RenderWindow choose_res(sf::VideoMode(resolutions[0][0], resolutions[0][1]), "Select Resolution", sf::Style::Default);
+	sf::Font fontRes;
+	fontRes.loadFromFile("resources\\menu.ttf");
+	sf::Text choose_res_text, res_text, fullscreen_text;
+	choose_res_text.setFont(fontRes);
+	choose_res_text.setString("Select Resolution");
+	choose_res_text.setCharacterSize(100);
+	choose_res_text.setColor(sf::Color::White);
+	choose_res_text.setStyle(sf::Text::Regular);
+	choose_res_text.setOrigin((choose_res_text.getLocalBounds().width) / 2, 0);
+	choose_res_text.setPosition((choose_res.getSize().x / 2), 20);
+	res_text.setFont(fontRes);
+	res_text.setString("1920x1080");
+	res_text.setCharacterSize(150);
+	res_text.setColor(sf::Color::White);
+	res_text.setStyle(sf::Text::Regular);
+	res_text.setOrigin((res_text.getLocalBounds().width) / 2, (res_text.getLocalBounds().height) / 2);
+	res_text.setPosition((choose_res.getSize().x / 2), 200);
+	sf::CircleShape up_arrow(80, 3), down_arrow(80, 3);
+	up_arrow.setOrigin(up_arrow.getLocalBounds().width / 2, up_arrow.getLocalBounds().height);
+	down_arrow.setOrigin((up_arrow.getLocalBounds().width / 2), 0);
+	up_arrow.scale(1, 0.5);
+	down_arrow.scale(1, -0.5);
+	int res_textPos = res_text.getPosition().x;
+	up_arrow.setPosition(res_textPos, res_text.getPosition().y+20);
+	down_arrow.setPosition(res_textPos, res_text.getPosition().y + 190);
+
+	fullscreen_text.setFont(fontRes);
+	fullscreen_text.setString("F for Fullscreen");
+	fullscreen_text.setCharacterSize(100);
+	fullscreen_text.setColor(sf::Color::Green);
+	fullscreen_text.setStyle(sf::Text::Regular);
+	fullscreen_text.setOrigin((fullscreen_text.getLocalBounds().width) / 2, (fullscreen_text.getLocalBounds().height) / 2);
+	fullscreen_text.setPosition((choose_res.getSize().x / 2), 400);
+
+	while (choose_res.isOpen())
+	{
+		sf::Event event;
+		while (choose_res.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				choose_res.close();
+			if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Up))
+				if (resIndex < sizeof(resolutions) / sizeof(sf::VideoMode)) resIndex++;
+			if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Down))
+				if (resIndex > 0) resIndex--;
+			if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Enter))
+				choose_res.close();
+			if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::F))
+			{
+				isFullscreen = !isFullscreen;
+				fullscreen_text.setColor(isFullscreen ? sf::Color::Green : sf::Color::Red);
+			}
+				
+		}
+
+		res_text.setString(std::to_string(resolutions[resIndex][0])+"x"+std::to_string(resolutions[resIndex][1]));
+		res_text.setOrigin((res_text.getLocalBounds().width) / 2, (res_text.getLocalBounds().height) / 2);
+		res_text.setPosition((choose_res.getSize().x / 2), 200);
+
+		choose_res.clear();
+		choose_res.draw(choose_res_text);
+		choose_res.draw(res_text);
+		choose_res.draw(up_arrow);
+		choose_res.draw(down_arrow);
+		choose_res.draw(fullscreen_text);
+		choose_res.display();
+	}
+
 	//initialises the window
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Pong", sf::Style::Fullscreen);
+	sf::RenderWindow window(sf::VideoMode(resolutions[resIndex][0], resolutions[resIndex][1]), "Pong", isFullscreen ? sf::Style::Fullscreen : sf::Style::Default);
 	window.setVerticalSyncEnabled(true);
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
