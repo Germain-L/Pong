@@ -22,4 +22,4 @@
 - after a game is over wait 5 seconds for the menu to appear
 
 ## Experimental
-- I am uware it has lots of bugs and resolution problems
+- I am aware it has lots of bugs and resolution problems
